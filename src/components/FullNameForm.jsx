@@ -1,96 +1,68 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 
-export default function FullNameForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [fullName, setFullName] = useState("");
+function NameForm() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [error, setError] = useState('');
 
+  // Handles the first name input change
+  const handleFirstNameChange = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  // Handles the last name input change
+  const handleLastNameChange = (e) => {
+    setLastName(e.target.value);
+  };
+
+  // Handles form submission
   const handleSubmit = (e) => {
-    e.preventDefault();
-    setFullName(`${firstName} ${lastName}`);
+    e.preventDefault(); // Prevents page reload on form submission
+
+    // Check if both fields are filled
+    if (!firstName || !lastName) {
+      setError('Both fields are required');
+      setFullName(''); // Clear the full name in case of error
+    } else {
+      setError('');
+      setFullName(`${firstName} ${lastName}`);
+    }
   };
 
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <h2 style={styles.title}>Enter Your Name</h2>
-        
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          style={styles.input}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          style={styles.input}
-          required
-        />
-
-        <button
-          type="submit"
-          style={{
-            ...styles.button,
-            backgroundColor: firstName && lastName ? "#007BFF" : "#ccc",
-            cursor: firstName && lastName ? "pointer" : "not-allowed",
-          }}
-          disabled={!firstName || !lastName}
-        >
-          Submit
-        </button>
+    <div>
+      <h1>Enter your Name</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>First Name:</label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={handleFirstNameChange}
+            placeholder="First Name"
+          />
+        </div>
+        <div>
+          <label>Last Name:</label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={handleLastNameChange}
+            placeholder="Last Name"
+          />
+        </div>
+        {error && <div style={{ color: 'red' }}>{error}</div>}
+        <button type="submit">Submit</button>
       </form>
 
-      {fullName && <h2 style={styles.result}>Full Name: {fullName}</h2>}
+      {fullName && (
+        <div>
+          <h2>Full Name: {fullName}</h2>
+        </div>
+      )}
     </div>
   );
 }
 
-// Inline CSS styles for simplicity
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    backgroundColor: "#f8f9fa",
-  },
-  form: {
-    backgroundColor: "#fff",
-    padding: "20px",
-    borderRadius: "8px",
-    boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
-    width: "300px",
-    textAlign: "center",
-  },
-  title: {
-    marginBottom: "15px",
-    fontSize: "20px",
-  },
-  input: {
-    width: "100%",
-    padding: "8px",
-    marginBottom: "10px",
-    border: "1px solid #ccc",
-    borderRadius: "5px",
-  },
-  button: {
-    width: "100%",
-    padding: "10px",
-    border: "none",
-    borderRadius: "5px",
-    color: "#fff",
-    fontSize: "16px",
-  },
-  result: {
-    marginTop: "20px",
-    fontSize: "18px",
-    fontWeight: "bold",
-  },
-};
+export default NameForm;
