@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function NameForm() {
   const [firstName, setFirstName] = useState('');
@@ -29,6 +29,14 @@ function NameForm() {
       setFullName(`${firstName} ${lastName}`);
     }
   };
+
+  // Use useEffect to check the initial render
+  useEffect(() => {
+    console.log("Page has been rendered initially.");
+    // You can also check the initial state here if needed
+    console.log("Initial First Name:", firstName);
+    console.log("Initial Last Name:", lastName);
+  }, [firstName, lastName]); // Include firstName and lastName in the dependency array
 
   return (
     <div>
