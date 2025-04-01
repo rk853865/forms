@@ -36,7 +36,7 @@ function NameForm() {
     // You can also check the initial state here if needed
     console.log("Initial First Name:", firstName);
     console.log("Initial Last Name:", lastName);
-  }, [firstName, lastName]); // Include firstName and lastName in the dependency array
+  }, []); // Empty dependency array ensures this runs only once on initial render
 
   return (
     <div>
@@ -74,3 +74,4 @@ function NameForm() {
 }
 
 export default NameForm;
+
