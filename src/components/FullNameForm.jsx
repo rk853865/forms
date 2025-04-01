@@ -1,77 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-function NameForm() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [error, setError] = useState('');
+const NameForm = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [fullName, setFullName] = useState('');
+    const [error, setError] = useState('');
 
-  // Handles the first name input change
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
+    const handleSubmit = (event) => {
+        event.preventDefault(); // Prevent the default form submission
 
-  // Handles the last name input change
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
-  };
+        // Clear previous error message
+        setError('');
 
-  // Handles form submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents page reload on form submission
+        // Validate input fields
+        if (!firstName || !lastName) {
+            setError('Both fields are required.');
+            return;
+        }
 
-    // Check if both fields are filled
-    if (!firstName || !lastName) {
-      setError('Both fields are required');
-      setFullName(''); // Clear the full name in case of error
-    } else {
-      setError('');
-      setFullName(`${firstName} ${lastName}`);
-    }
-  };
+        // Set the full name
+        setFullName(`${firstName} ${lastName}`);
+    };
 
-  // Use useEffect to check the initial render
-  useEffect(() => {
-    console.log("Page has been rendered initially.");
-    // You can also check the initial state here if needed
-    console.log("Initial First Name:", firstName);
-    console.log("Initial Last Name:", lastName);
-  }, []); // Empty dependency array ensures this runs only once on initial render
-
-  return (
-    <div>
-      <h1>Enter your Name</h1>
-      <form onSubmit={handleSubmit}>
+    return (
         <div>
-          <label>First Name:</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={handleFirstNameChange}
-            placeholder="First Name"
-          />
-        </div>
-        <div>
-          <label>Last Name:</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={handleLastNameChange}
-            placeholder="Last Name"
-          />
-        </div>
-        {error && <div style={{ color: 'red' }}>{error}</div>}
-        <button type="submit">Submit</button>
-      </form>
+            <h1>Enter Your Name</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="firstName">First Name:</label>
+                <input
+                    type="text"
+                    id="firstName"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                />
+                <br /><br />
+                <label htmlFor="lastName">Last Name:</label>
+                <input
+                    type="text"
+                    id="lastName"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                />
+                <br /><br />
+                <button type="submit">Submit</button>
+            </form>
 
-      {fullName && (
-        <div>
-          <h2>Full Name: {fullName}</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {fullName && <h2>Full Name: {fullName}</h2>}
         </div>
-      )}
-    </div>
-  );
-}
+    );
+};
 
 export default NameForm;
-
